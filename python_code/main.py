@@ -9,6 +9,7 @@ def ielts_point(ls):
         res=tp[0]+1
     return res
 
+
 import os
 os.system("cls")
 ls=list(map(float,input().split()))
