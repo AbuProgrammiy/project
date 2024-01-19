@@ -1,3 +1,8 @@
+//Assalomualeykum ustoz, uy ishini tekshirgani kirib ushbu habarni oqivotgan boses, 
+//sizdan iltimos uy ishimmi ertaga ertalabdan tekshirin, soat 3 00 AM gacham tayor qib qoyaman!🙏
+//hozircha chala...
+
+
 
 using HomeOne;
 using System;
