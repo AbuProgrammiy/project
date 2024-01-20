@@ -1,6 +1,6 @@
 //umuman bugi yoq (agar tori ishlatses)
 //hamma funksiyalari joyida togri ishlavotti
-
+//bot linki https://t.me/BotMennn_bot
 
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
