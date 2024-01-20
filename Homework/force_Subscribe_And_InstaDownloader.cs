@@ -1,9 +1,12 @@
+// chotki ishlavotti
+
 using Newtonsoft.Json.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 
 var botClient = new TelegramBotClient("6912030821:AAH4IJkK9nCFZ94YAYOf_iIfiagquHprE4Y");
 
@@ -34,16 +37,33 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
         return;
     var chatId = message.Chat.Id;
 
-    if (message.Text == "/start")
+    ChatMember you = await botClient.GetChatMemberAsync("@heheboi2022", chatId );
+    if (you == null)
+    {
+        await botClient.SendTextMessageAsync(
+            chatId: chatId,
+            text: "Kanalga a'zo bo'ling!",
+            replyMarkup: new InlineKeyboardMarkup(
+        InlineKeyboardButton.WithUrl(
+            text: "Hop",
+            url: "https://t.me/heheboi2022")),
+            cancellationToken: cancellationToken);
+        return;
+    }
+
+    else if (message.Text == "/start")
         await botClient.SendTextMessageAsync(
             chatId: chatId,
             text: "Link yuboring",
             cancellationToken: cancellationToken);
     else
     {
+        Message kuting =await botClient.SendTextMessageAsync(
+            chatId: chatId,
+            text: "Hozir",
+            cancellationToken: cancellationToken);
         try
         {
-
             var client = new HttpClient();
             var request = new HttpRequestMessage
             {
@@ -88,6 +108,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
                 text: "Notogri link",
                 cancellationToken: cancellationToken);
         }
+        await botClient.DeleteMessageAsync(chatId, kuting.MessageId);
     }
     
 }
@@ -104,4 +125,3 @@ Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, 
     Console.WriteLine(ErrorMessage);
     return Task.CompletedTask;
 }
-
