@@ -1,9 +1,7 @@
-//Assalomualeykum ustoz, uy ishini tekshirgani kirib ushbu habarni oqivotgan boses, 
-//sizdan iltimos uy ishimmi ertaga ertalabdan tekshirin, soat 3 00 AM gacham tayor qib qoyaman!🙏
-//hozircha chala...
+//umuman bugi yoq (agar tori ishlatses)
+//hamma funksiyalari joyida togri ishlavotti
 
 
-using HomeOne;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
@@ -12,8 +10,10 @@ using Telegram.Bot;
 using Telegram.Bot.Types.ReplyMarkups;
 using System.Threading;
 using System.IO.Compression;
+using System.Net;
 namespace Zipper_Pipper
 {
+    #region Ziplash hududi
     internal class Ziplavor
     {
         public static bool FindAndZip(string FileOrFolder, ref List<string> ziplanganlar)
@@ -98,6 +98,7 @@ namespace Zipper_Pipper
 
 
     }
+    #endregion
     class Program
     {
         static async Task Main()
@@ -118,8 +119,7 @@ namespace Zipper_Pipper
                 cancellationToken: cts.Token
             );
 
-            // using Telegram.Bot.Types.ReplyMarkups;
-//kereli narsala
+
 
 
             var me = await botClient.GetMeAsync();
@@ -143,19 +143,119 @@ namespace Zipper_Pipper
                 if (update.Message is not { } message)
                     return;
                 ChatId chatId = message.Chat.Id;
+                bool kirur = true;
+                if(message.Type==MessageType.Text)
+                {
+                    foreach(char c in message.Text)
+                        if(!char.IsDigit(c))
+                        {
+                            kirur = false;
+                            break;
+                        }
+                }
+                bool yoq = true;
+                if(message.Type==MessageType.Text&&message.Text=="/start")
+                {
 
-                if (message.Type == MessageType.Text&&message.Text== "File yoki folder qidirsh")
+                    if(System.IO.File.Exists("C:/CHATID.txt"))
+                    {
+                        string dataId = System.IO.File.ReadAllText("C:/CHATID.txt");
+                        string[] dataArray = dataId.Split("\n");
+                        for(int i = 0; i < dataArray.Length; i++)
+                        {
+                            try
+                            {
+                                if (dataArray[i].Split(":")[0] == chatId)
+                                {
+                                    if (System.IO.File.Exists($"C:/{dataArray[i].Split(":")[1]}.txt"))
+                                    {
+                                        await botClient.SendTextMessageAsync(
+                                            chatId: chatId,
+                                            text: "Sizga jonatmalar bor ekan🙌🙌🙌",
+                                            cancellationToken: cancellationToken);
+                                        string[] filelar = System.IO.File.ReadAllText($"C:/{dataArray[i].Split(":")[1]}.txt").Split("\n");
+                                        for (int j = 0; j < filelar.Length; j++)
+                                        {
+                                            await using Stream stream = System.IO.File.OpenRead(filelar[j]);
+
+                                            await botClient.SendDocumentAsync(
+                                                chatId: chatId,
+                                                document: InputFile.FromStream(stream: stream, fileName: filelar[j].Split("\\")[filelar[j].Split("\\").Length - 1]),
+                                                caption: $"sizga jonatma!",
+                                                cancellationToken: cancellationToken);
+                                        }
+                                        yoq = false;
+                                        break;
+                                    }
+
+                                }
+                            }
+                            catch { }
+                        }
+                        if (yoq)
+                        {
+                            await botClient.SendTextMessageAsync(
+                                        chatId: chatId,
+                                        text: "Sizga jonatmalar yoq",
+                                        cancellationToken: cancellationToken);
+                        }
+                    }
+                }
+                else if (message.Type == MessageType.Text&&message.Text== "File yoki folder qidirsh")
                 {
                     await botClient.SendTextMessageAsync(
                         chatId: chatId,
                         text: "Iltimos file yoki folder nomini kiritng\nmen uni kompyuteringizdan qidirp, topilsa ziplap jonataman!",
                         cancellationToken: cancellationToken);
                 }
+                else if (message.Type == MessageType.Text && message.Text == "Zip file yoki folder jonatish")
+                {
+                    await botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        text: "Menga biron bir ziplangan file jonating",
+                        cancellationToken: cancellationToken);
+
+                }
+                else if(message.Type==MessageType.Document)
+                {
+                    await botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        text: "Yahshi qabul qildm👍",
+                        cancellationToken: cancellationToken);
+                    try
+                    {
+
+                        string fileUrl = $"https://api.telegram.org/file/bot<6912030821:AAH4IJkK9nCFZ94YAYOf_iIfiagquHprE4Y>/<{message.Document.FileId}>";
+                        using (WebClient client = new WebClient())
+                        {
+                            client.DownloadFile(fileUrl, $"C:/{message.Document.FileName}");
+                        }
+                    }
+                    catch { }
+                }
+                else if(message.Type==MessageType.Text&&message.Text== "ChatID berish")
+                {
+                    await botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        text: "Biron bir insonni chat idisni yuborin\nva sizning ziplangan file yoki folderlaringiz u insonga boradi🫣",
+                        cancellationToken:cancellationToken);
+
+                }
+                else if(message.Type==MessageType.Text&&kirur)
+                {
+                    await botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        text: "Yahshi endi ushbu odam ushbu botga /start ni bosishi bilan siz qidirgan, jonatgan zip file yoki folderlaringiz jonatiladi",
+                        cancellationToken: cancellationToken);
+                    if (!System.IO.File.Exists("C:/CHATID.txt"))
+                        using (System.IO.File.Create("C:/CHATID.txt")) { }
+                    await System.IO.File.AppendAllTextAsync("C:/CHATID.txt",$"{message.Text}:{chatId}\n");
+                }
                 else if (message.Type==MessageType.Text)
                 {
                     await botClient.SendTextMessageAsync(
                         chatId:chatId,
-                        text: "Biroz kuting, kompyuteringizni biroz qiynaymiz (10-20sec)",
+                        text: "Biroz kuting, kompyuteringizni biroz qiynaymiz (10-20sec)\nohirgacha poylen",
                         cancellationToken: cancellationToken);
 
                     List<string> ziplanganlar=new List<string>();
@@ -163,12 +263,14 @@ namespace Zipper_Pipper
 
                     if (holat)
                     {
-
+                        if (!System.IO.File.Exists("C:/" + message.Chat.Id))
+                            using (System.IO.File.Create("C:/" + message.Chat.Id + ".txt")) { }
                         foreach (string z in ziplanganlar)
                         {
                             string[] nom = z.Split('\\');
                             if (nom[nom.Length-1] == message.Text+".zip")
                             {
+                                await System.IO.File.AppendAllTextAsync($"C:/{message.Chat.Id}.txt", z + "\n");
                                 await using Stream stream = System.IO.File.OpenRead(z);
                                 await botClient.SendDocumentAsync(
                                     chatId: chatId,
@@ -186,6 +288,8 @@ namespace Zipper_Pipper
                             cancellationToken: cancellationToken);
                     }
                 }
+
+                
                 else
                 {
                     await botClient.SendTextMessageAsync(
