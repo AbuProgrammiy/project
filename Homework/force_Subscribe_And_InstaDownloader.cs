@@ -1,5 +1,4 @@
 // chotki ishlavotti
-
 using Newtonsoft.Json.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
@@ -7,7 +6,7 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
-
+//5732076896
 var botClient = new TelegramBotClient("6912030821:AAH4IJkK9nCFZ94YAYOf_iIfiagquHprE4Y");
 
 using CancellationTokenSource cts = new();
@@ -38,7 +37,8 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
     var chatId = message.Chat.Id;
 
     ChatMember you = await botClient.GetChatMemberAsync("@heheboi2022", chatId );
-    if (you == null)
+    await Console.Out.WriteLineAsync(you.Status.ToString());
+    if (you.Status == ChatMemberStatus.Left)
     {
         await botClient.SendTextMessageAsync(
             chatId: chatId,
