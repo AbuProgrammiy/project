@@ -7,7 +7,6 @@
 	a) update instructor
 	   set salary=salary/10+salary
 	   where dept_name='Comp. Sci.';
-
 	b) delete from course where course_id not in(select course_id from section);
 
 
