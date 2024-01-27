@@ -7,3 +7,6 @@
 	a) update instructor
 	   set salary=salary/10+salary
 	   where dept_name='Comp. Sci.';
+
+--hozircha shu, qoganini yana deadline gacha qoshib boraman
+--hozir kolejga ketvotudm iloji bosa 14: 30 gacha uy ishimi boholami turin 🙏)
