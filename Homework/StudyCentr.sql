@@ -1,3 +1,4 @@
+--hello
 --E'lon qilish
 
 CREATE TABLE "Group"(
