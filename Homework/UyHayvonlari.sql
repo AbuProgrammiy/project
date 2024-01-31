@@ -125,6 +125,7 @@ $$;
 --select pets_count_of_adopter(5);
 --select generate_medical_records_of_pet(1);
 
-
+--ERD ini korish uchun link
+--https://t.me/heheboi2022/23
 
 -- Agar qandaydir xatoga yo'l qoygan bo'lsam meni ogohlatring, to'g'irlab qo'yaman)
