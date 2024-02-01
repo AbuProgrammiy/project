@@ -1,7 +1,6 @@
 --Continuing...
 
 
-
 create table tags(id int,
 				  tag_name varchar(255),
 				  icon text,
@@ -35,3 +34,35 @@ create table staff_accounts(id UUID,
 					 created_by UUID,
 					 uploaded_by UUID);
 
+create table notifications(id UUID,
+						  account_id UUID,
+						  title varchar(100),
+						  content text,
+						  seen boolean,
+						  created_at timestamptz,
+						  recieve_time timestamptz,
+						  notification_expiry_date date);
+						  
+create table variant_values(id UUID,
+						   variant_id UUID,
+						   price numeric,
+						   quantity integer);
+
+create table product_tags(tag_id int,
+						 product_id UUID);
+						 
+create table product_categories(category_id UUID,
+							   product_id UUID);
+							   
+create table staff_roles(staff_id UUID,
+						role_id int);
+						
+create table slideshows(id UUID,
+					   destination_url text,
+					   image_url text,
+					   clicks smallint,
+					   created_at timestamptz,
+					   uploated_at timestamptz,
+					   created_by UUID,
+					   uploated_by UUID);
+					   
