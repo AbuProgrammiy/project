@@ -66,3 +66,5 @@ create table slideshows(id UUID,
 					   created_by UUID,
 					   uploated_by UUID);
 					   
+
+--dars tugagungacham qib qoyaman))
